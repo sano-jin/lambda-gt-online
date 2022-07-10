@@ -6,7 +6,7 @@
       href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400&display=swap"
       rel="stylesheet"
     />
-    <script type="text/javascript" src="js.bc.js"></script>
+    <script type="text/javascript" src="_build/default/js/js.bc.js"></script>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"
@@ -150,30 +150,38 @@ nu _X1. nu _X2. nu _X3. nu _X4. nu _X5. (
       document.getElementById("start-button").onclick = function () {
         const code = editor.value;
 
-        const result = LambdaGT.rungrad(code);
-        console.log("result", result);
+        try {
+          const result = LambdaGT.rungrad(code);
+          console.log("result", result);
 
-        const [_, k, graph] = LambdaGT.extractk(result);
-        console.log(k);
-        cont = k[1];
+          const [_, k, graph] = LambdaGT.extractk(result);
+          console.log(k);
+          cont = k[1];
 
-        console.log("graph", graph);
-        // document.getElementById("result").innerText = graph;
-        d3.select("#graph").graphviz().renderDot(graph);
+          console.log("graph", graph);
+          // document.getElementById("result").innerText = graph;
+          d3.select("#graph").graphviz().renderDot(graph);
+        } catch (e) {
+          alert(e);
+        }
       };
 
       document.getElementById("go-button").onclick = function () {
         if (!cont) return;
 
-        const result = cont();
-        console.log("result", result);
+        try {
+          const result = cont();
+          console.log("result", result);
 
-        const [_, k, graph] = LambdaGT.extractk(result);
-        console.log(k);
-        cont = k[1];
+          const [_, k, graph] = LambdaGT.extractk(result);
+          console.log(k);
+          cont = k[1];
 
-        // document.getElementById("result").innerText = graph;
-        d3.select("#graph").graphviz().renderDot(graph);
+          // document.getElementById("result").innerText = graph;
+          d3.select("#graph").graphviz().renderDot(graph);
+        } catch (e) {
+          alert(e);
+        }
       };
     });
   </script>
