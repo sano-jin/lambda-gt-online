@@ -124,6 +124,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         alert("error");
         console.log("error");
     }
+    document.getElementById("result").innerText = "";
     graphviz.renderDot("digraph {start -> go; go -> go}");
   });
 
@@ -137,12 +138,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
       const result = LambdaGT.rungrad(code);
       console.log("result", result);
 
-      const [_, k, graph] = LambdaGT.extractk(result);
+      const [_, k, graph, value] = LambdaGT.extractk(result);
       console.log(k);
       cont = k[1];
 
       console.log("graph", graph);
-      // document.getElementById("result").innerText = graph;
+      document.getElementById("result").innerText = value;
       graphviz.renderDot(graph);
     } catch (e) {
       alert(e);
@@ -159,12 +160,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
       const result = cont();
       console.log("result", result);
 
-      const [_, k, graph] = LambdaGT.extractk(result);
+      const [_, k, graph, value] = LambdaGT.extractk(result);
       console.log(k);
       cont = k[1];
 
       console.log("graph", graph);
-      // document.getElementById("result").innerText = graph;
+      document.getElementById("result").innerText = value;
       graphviz.renderDot(graph);
     } catch (e) {
       alert(e);
