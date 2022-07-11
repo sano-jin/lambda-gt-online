@@ -17,83 +17,28 @@
     ></script>
     <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
     <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+    <script type="text/javascript" src="playground.js"></script>
 
-    <style>
-      body {
-        font-family: "Source Code Pro", monospace;
-        color: #444;
-        font-size: 16px;
-        /*
-        background-color: #ddd;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 800px;
-        padding: 20px;
-        font-size: 20px;
-        */
-      }
-      textarea {
-        border: 1px solid #ddd;
-        font-family: "Source Code Pro", monospace;
-        color: #444;
-        min-height: 800px;
-        width: calc(100% - 100px);
-        margin: 50px;
-        margin-bottom: 0px;
-        font-size: 16px;
-        /*
-        background-color: #eee;
-        min-width: 100%;
-        padding: 10px;
-        min-height: 600px;
-        font-size: 16px;
-        */
-      }
-
-      div {
-        margin: 50px;
-      }
-
-      #run-button-wrapper > label {
-        text-align: center;
-        border: 1px solid blue;
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-        margin: 10px;
-        border: 1px solid gray;
-        padding: 10px 50px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-      #run-button-wrapper > input {
-        display: none;
-      }
-      #run-button-wrapper > label:hover {
-        background-color: #aaf;
-        border: 1px solid #ffd;
-        color: #fff;
-        transition: 0.3s;
-        box-shadow: 5px 10px 0px #ccc;
-      }
-      #run-button-wrapper > label:active,
-      #run-button-wrapper > label:focus,
-      #run-button-wrapper > label:target {
-        box-shadow: 5px 10px #888888;
-      }
-
-      #result {
-        background-color: #eee;
-        padding: 10px;
-      }
-      #graph > svg {
-        border: 1px solid blue;
-        width: 100%;
-        height: 800px;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div>
+      <label for="example-selector">Choose an example:</label>
+      <select id="example-selector">
+        <option value="map_lltree">Map leaves of a leaf-linked tree</option>
+        <option value="append_dlists">Append difference lists</option>
+        <option value="pop_back_dlist_empty">
+          Pop back an empty difference list
+        </option>
+        <option value="pop_back_dlist_cons">
+          Pop back an difference list and add a cons on head
+        </option>
+        <option value="pop_back_dlist_many">
+          Pop back difference list many times
+        </option>
+      </select>
+    </div>
+
     <textarea id="editor" name="w3review" rows="4" cols="50">
 let f[_X] = {<\x[_X]. {nu _X1. nu _X2. (Succ (_X1, _X), x [_X1])}>(_X)} in
 
@@ -123,6 +68,7 @@ let map[_X] =
 
 {map[_X]}
 {f [_X]}
+({Log}
 {
 nu _X1. nu _X2. nu _X3. nu _X4. nu _X5. (
   Node (_X1, _X2, _X),
@@ -131,7 +77,7 @@ nu _X1. nu _X2. nu _X3. nu _X4. nu _X5. (
   Leaf (_X5, _X3, _R, _X2),
   Zero (_X5)
 )
-}
+})
     </textarea>
 
     <div id="run-button-wrapper">
@@ -148,66 +94,4 @@ nu _X1. nu _X2. nu _X3. nu _X4. nu _X5. (
 
     <div id="graph" style="text-align: center"></div>
   </body>
-  <script>
-    let cont = null;
-    let graph = "";
-    const graphviz = d3
-      .select("#graph")
-      .graphviz()
-      .transition(function () {
-        return d3
-          .transition("main")
-          .ease(d3.easeLinear)
-          .delay(500)
-          .duration(500);
-      });
-    // .logEvents(true);
-
-    window.addEventListener("DOMContentLoaded", (event) => {
-      console.log("DOM fully loaded and parsed");
-      graphviz.renderDot("digraph {start -> go; go -> go}");
-
-      const editor = document.getElementById("editor");
-      document.getElementById("start-button").onclick = function () {
-        const code = editor.value;
-
-        try {
-          const result = LambdaGT.rungrad(code);
-          console.log("result", result);
-
-          const [_, k, graph] = LambdaGT.extractk(result);
-          console.log(k);
-          cont = k[1];
-
-          console.log("graph", graph);
-          // document.getElementById("result").innerText = graph;
-          graphviz.renderDot(graph);
-        } catch (e) {
-          alert(e);
-        }
-      };
-
-      document.getElementById("go-button").onclick = function () {
-        if (!cont) {
-          alert("cannot proceed more");
-          return;
-        }
-
-        try {
-          const result = cont();
-          console.log("result", result);
-
-          const [_, k, graph] = LambdaGT.extractk(result);
-          console.log(k);
-          cont = k[1];
-
-          console.log("graph", graph);
-          // document.getElementById("result").innerText = graph;
-          graphviz.renderDot(graph);
-        } catch (e) {
-          alert(e);
-        }
-      };
-    });
-  </script>
 </html>
