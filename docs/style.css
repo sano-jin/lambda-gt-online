@@ -43,7 +43,9 @@ select {
 #run-button-wrapper > label {
   text-align: center;
   border: 1px solid blue;
+  /*
   width: 80%;
+  */
   margin-left: auto;
   margin-right: auto;
   margin: 10px;
@@ -96,5 +98,28 @@ select {
 }
 @media only screen and (max-width: 800px) {
   body {
+    font-size: 14px;
+  }
+  textarea {
+    font-size: 14px;
+    margin: 5px;
+    width: calc(100% - 5px);
+  }
+  .contents {
+    margin: 0 10px;
+  }
+  .content {
+    margin: 0 0px;
+  }
+  .content div {
+    margin: 10px 5px;
+  }
+  /*
+  #run-button-wrapper {
+    margin: 25px 0;
+  }
+  */
+  #run-button-wrapper > label {
+    display: inline-block;
   }
 }
