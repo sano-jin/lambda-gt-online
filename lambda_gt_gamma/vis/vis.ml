@@ -4,21 +4,11 @@ open Eval
 
 let links_of_atoms atoms = List.concat_map snd @@ atoms
 
+(** local link と free link を分ける *)
 let unzip_links =
   List.partition_map @@ function LocalLink l -> Left l | FreeLink f -> Right f
 
-(** アトムに id を振り直す *)
-let rec helper ids = function
-  | [] -> []
-  | ((i, v), args) :: t ->
-      let i = if List.mem i ids then unique () else i in
-      ((i, v), args) :: helper (i :: ids) t
-
 (** 可視化のために，アトムリストを適当に変換する *)
-let data_of_atoms atoms =
-  let atoms = List.sort (fun ((i, _), _) ((j, _), _) -> compare i j) atoms in
-  atoms
-
 let dot_of_atoms (atoms : graph) =
   let link_map =
     let helper ((i, _), args) =

@@ -22,24 +22,26 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div>
-      <label for="example-selector">Choose an example:</label>
-      <select id="example-selector">
-        <option value="map_lltree">Map leaves of a leaf-linked tree</option>
-        <option value="append_dlists">Append difference lists</option>
-        <option value="pop_back_dlist_empty">
-          Pop back an empty difference list
-        </option>
-        <option value="pop_back_dlist_cons">
-          Pop back an difference list and add a cons on head
-        </option>
-        <option value="pop_back_dlist_many">
-          Pop back difference list many times
-        </option>
-      </select>
-    </div>
+    <div class="contents">
+      <div class="content">
+        <div>
+          <label for="example-selector">Choose an example:</label>
+          <select id="example-selector">
+            <option value="map_lltree">Map leaves of a leaf-linked tree</option>
+            <option value="append_dlists">Append difference lists</option>
+            <option value="pop_back_dlist_empty">
+              Pop back an empty difference list
+            </option>
+            <option value="pop_back_dlist_cons">
+              Pop back an difference list and add a cons on head
+            </option>
+            <option value="pop_back_dlist_many">
+              Pop back difference list many times
+            </option>
+          </select>
+        </div>
 
-    <textarea id="editor" name="w3review" rows="4" cols="50">
+        <textarea id="editor">
 let f[_X] = {<\x[_X]. {nu _X1. nu _X2. (Succ (_X1, _X), x [_X1])}>(_X)} in
 
 let map[_X] =
@@ -78,29 +80,34 @@ nu _X1. nu _X2. nu _X3. nu _X4. nu _X5. (
   Zero (_X5)
 )
 })
-    </textarea>
+    </textarea
+        >
+      </div>
 
-    <div id="run-button-wrapper">
-      <input type="button" id="start-button" name="start-button" />
-      <label for="start-button">start</label>
+      <div class="content">
+        <div id="run-button-wrapper">
+          <input type="button" id="start-button" name="start-button" />
+          <label for="start-button">start</label>
 
-      <input type="button" id="go-button" name="go-button" />
-      <label for="go-button">go</label>
+          <input type="button" id="go-button" name="go-button" />
+          <label for="go-button">go</label>
+        </div>
+
+        <div id="result"></div>
+
+        <div>
+          <label for="layout-selector">Choose an layout:</label>
+          <select id="layout-selector">
+            <option value="circo">circo</option>
+            <option value="neato">neato</option>
+            <option value="fdp">fdp</option>
+            <option value="twopi">twopi</option>
+            <option value="dot">dot</option>
+          </select>
+        </div>
+
+        <div id="graph" style="text-align: center"></div>
+      </div>
     </div>
-
-    <div id="result"></div>
-
-    <div>
-      <label for="layout-selector">Choose an layout:</label>
-      <select id="layout-selector">
-        <option value="circo">circo</option>
-        <option value="neato">neato</option>
-        <option value="fdp">fdp</option>
-        <option value="twopi">twopi</option>
-        <option value="dot">dot</option>
-      </select>
-    </div>
-
-    <div id="graph" style="text-align: center"></div>
   </body>
 </html>
