@@ -1,5 +1,13 @@
 let global_cont = null;
-let global_graph = "";
+const initial_global_graph = `
+digraph {
+  graph [layout = LAYOUT];
+
+  start -> go;
+  go -> go
+}
+`;
+let global_graph = initial_global_graph;
 let global_layout = "circo";
 
 const examples = [
@@ -142,11 +150,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
         console.log("error");
     }
     document.getElementById("result").innerText = "";
-    graphviz.renderDot("digraph {start -> go; go -> go}");
+    global_graph = initial_global_graph;
+    updateGraph(global_graph);
   });
 
   console.log("DOM fully loaded and parsed");
-  graphviz.renderDot("digraph {start -> go; go -> go}");
+
+  updateGraph(initial_global_graph);
 
   document.getElementById("start-button").onclick = function () {
     const code = editor.value;

@@ -29,6 +29,10 @@ textarea {
         font-size: 16px;
         */
 }
+select {
+  font-size: 16px;
+  font-family: "Source Code Pro", monospace;
+}
 
 div {
   margin: 50px 50px 0;
