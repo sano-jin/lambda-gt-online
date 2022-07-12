@@ -88,6 +88,11 @@ select {
   }
   .content {
     max-width: 1000px;
+    width: 45vw;
+
+    /*
+    width: 50vw;
+  */
   }
   #graph {
     width: 800px;
