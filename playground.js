@@ -1,5 +1,6 @@
-let cont = null;
-let graph = "";
+let global_cont = null;
+let global_graph = "";
+let global_layout = "circo";
 
 const examples = [
   `
@@ -101,6 +102,22 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // .logEvents(true);
   const editor = document.getElementById("editor");
 
+  const updateGraph = (graph) => {
+    console.log("updateGraph", graph, global_layout);
+
+    global_graph = graph;
+    const g = graph.replace("LAYOUT", global_layout);
+    console.log("updateGraph", g);
+    graphviz.renderDot(g);
+  };
+
+  const layout_selector = document.getElementById("layout-selector");
+  layout_selector.addEventListener("change", () => {
+    console.log("change layout", layout_selector.value);
+    global_layout = layout_selector.value;
+    updateGraph(global_graph);
+  });
+
   const selector = document.getElementById("example-selector");
   selector.addEventListener("change", () => {
     console.log(selector.value);
@@ -144,7 +161,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
       console.log("graph", graph);
       document.getElementById("result").innerText = value;
-      graphviz.renderDot(graph);
+      updateGraph(graph);
     } catch (e) {
       alert(e);
     }
@@ -166,7 +183,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
       console.log("graph", graph);
       document.getElementById("result").innerText = value;
-      graphviz.renderDot(graph);
+      updateGraph(graph);
     } catch (e) {
       alert(e);
     }

@@ -90,7 +90,7 @@ let dot_of_atoms (atoms : graph) =
   let dot =
     [
       "digraph G {";
-      "\tgraph [layout=circo];";
+      "\tgraph [layout = LAYOUT];";
       "\tedge [arrowhead = none];";
       atom_settings;
       local_link_settings;
