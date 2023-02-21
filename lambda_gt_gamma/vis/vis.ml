@@ -53,7 +53,7 @@ let dot_of_atoms (atoms : graph) =
     String.concat "\n" @@ List.map free_link_setting freelinks
   in
 
-  let atom_setting _atom_id ((((i, _) as atom_name), _) : Eval.atom) =
+  let atom_setting _atom_id ((((i, atom_name)  ), _) : Eval.atom) =
     let v = string_of_atom_name atom_name in
     "\tAtom_" ^ string_of_int i ^ "[label=\"" ^ v ^ "\"];"
   in
@@ -99,6 +99,7 @@ let app_cont = function Cont cont -> cont
 let rec eval theta exp cont =
   let k cont = Cont cont in
   match exp with
+  | BinOp _ -> failwith @@ "not implemented yet"
   | Graph graph ->
       app_cont cont @@ reid @@ fuse_fusions @@ synthesis theta graph
   | App (e1, e2) -> (
@@ -122,7 +123,7 @@ let rec eval theta exp cont =
       eval theta e1 @@ k
       @@ fun v1 ->
       let _, template = alpha100 template in
-      match match_atoms template v1 with
+      match match_ template v1 with
       | None -> eval theta e3 cont
       | Some theta2 ->
           let theta = theta2 @ theta in
@@ -152,6 +153,6 @@ let exec code =
 
 let vis () =
   let graph = exec @@ read_file Sys.argv.(1) in
-  print_endline @@ "// " ^ Eval.string_of_graph_with_nu graph;
+  print_endline @@ "// " ^ Eval.string_of_graph graph;
   print_newline ();
   print_endline @@ dot_of_atoms graph
