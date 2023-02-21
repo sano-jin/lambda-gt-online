@@ -99,7 +99,18 @@ let app_cont = function Cont cont -> cont
 let rec eval theta exp cont =
   let k cont = Cont cont in
   match exp with
-  | BinOp _ -> failwith @@ "not implemented yet"
+  | BinOp (f, op, e1, e2) -> (
+      eval theta e1 @@ k
+      @@ fun v1 ->
+      eval theta e2 @@ k
+      @@ fun v2 ->
+      match (v1, v2) with
+      | [ ((_, Int i1), xs1) ], [ ((_, Int i2), _) ] -> 
+              app_cont cont
+              [ ((unique (), Int (f i1 i2)), xs1) ] 
+      | _ ->
+          failwith @@ "integers are expected for " ^ op ^ " but were "
+          ^ string_of_graph v1 ^ " and " ^ string_of_graph v2)
   | Graph graph ->
       app_cont cont @@ reid @@ fuse_fusions @@ synthesis theta graph
   | App (e1, e2) -> (
