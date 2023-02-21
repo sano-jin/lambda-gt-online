@@ -9,12 +9,12 @@ let rec k_of_cont = function
       K
         ( None,
           Js.string @@ Vis.dot_of_atoms v,
-          Js.string @@ Eval.string_of_graph_with_nu v )
+          Js.string @@ Eval.string_of_graph v )
   | Either.Left (cont, v) ->
       K
         ( Some (fun () -> k_of_cont @@ Vis.app_cont cont v),
           Js.string @@ Vis.dot_of_atoms v,
-          Js.string @@ Eval.string_of_graph_with_nu v )
+          Js.string @@ Eval.string_of_graph v )
 
 let extract_k = function K k -> k
 let eval_grad exp = k_of_cont @@ Vis.eval [] exp (Vis.Cont Either.right)
