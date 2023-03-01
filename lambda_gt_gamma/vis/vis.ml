@@ -10,13 +10,15 @@ let unzip_links =
 
 (** 可視化のために，アトムリストを適当に変換する *)
 let dot_of_atoms (atoms : graph) =
+  (* リンク名からポートの集合への写像を作る． *)
   let link_map =
-    let helper ((i, _), args) =
-      List.mapi (fun arg_i link -> (link, (i, arg_i))) args
+    let helper ((atom_i, _), args) =
+      List.mapi (fun arg_i link -> (link, (atom_i, arg_i))) args
     in
     List.concat_map helper atoms
   in
   let link_dict = ListExtra.gather link_map in
+
   let normal_links, link_dict =
     let helper = function
       | LocalLink x, [ p1; p2 ] -> Either.Left (x, (p1, p2))
@@ -53,7 +55,7 @@ let dot_of_atoms (atoms : graph) =
     String.concat "\n" @@ List.map free_link_setting freelinks
   in
 
-  let atom_setting _atom_id ((((i, atom_name)  ), _) : Eval.atom) =
+  let atom_setting _atom_id (((i, atom_name), _) : Eval.atom) =
     let v = string_of_atom_name atom_name in
     "\tAtom_" ^ string_of_int i ^ "[label=\"" ^ v ^ "\"];"
   in
@@ -105,9 +107,8 @@ let rec eval theta exp cont =
       eval theta e2 @@ k
       @@ fun v2 ->
       match (v1, v2) with
-      | [ ((_, Int i1), xs1) ], [ ((_, Int i2), _) ] -> 
-              app_cont cont
-              [ ((unique (), Int (f i1 i2)), xs1) ] 
+      | [ ((_, Int i1), xs1) ], [ ((_, Int i2), _) ] ->
+          app_cont cont [ ((unique (), Int (f i1 i2)), xs1) ]
       | _ ->
           failwith @@ "integers are expected for " ^ op ^ " but were "
           ^ string_of_graph v1 ^ " and " ^ string_of_graph v2)
