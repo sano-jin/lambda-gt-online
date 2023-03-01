@@ -19,6 +19,7 @@ let dot_of_atoms (atoms : graph) =
   in
   let link_dict = ListExtra.gather link_map in
 
+  (* 端点が二つしか無いリンク (normal link) と，そうでは無いものに分離する．*)
   let normal_links, link_dict =
     let helper = function
       | LocalLink x, [ p1; p2 ] -> Either.Left (x, (p1, p2))
@@ -26,6 +27,8 @@ let dot_of_atoms (atoms : graph) =
     in
     List.partition_map helper link_dict
   in
+
+  (* normal link を dot の文字列に変換する． *)
   let normal_links_str =
     let helper (_, ((i1, _), (i2, _))) =
       Printf.sprintf "\tAtom_%d -> Atom_%d;" i1 i2
