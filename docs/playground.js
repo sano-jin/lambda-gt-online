@@ -102,6 +102,9 @@ in
 ];
 
 window.addEventListener("DOMContentLoaded", (event) => {
+  window.alert(
+    "We have new playground here: https://sano-jin.github.io/lambda-gt-playground/."
+  );
   const graphviz = d3
     .select("#graph")
     .graphviz()
